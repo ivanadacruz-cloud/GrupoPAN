@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { VideoRoom } from '@/components/teleconsulta/VideoRoom';
 import { ClinicalRecordPanel } from '@/components/teleconsulta/ClinicalRecordPanel';
 import { Button } from '@/components/ui/Button';
 
-export default function TeleconsultaPage() {
+function TeleconsultaContent() {
   const searchParams = useSearchParams();
   const role = searchParams.get('role') || 'patient';
   const [joined, setJoined] = useState(false);
@@ -51,5 +51,13 @@ export default function TeleconsultaPage() {
         </aside>
       )}
     </div>
+  );
+}
+
+export default function TeleconsultaPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Carregando Sala...</div>}>
+      <TeleconsultaContent />
+    </Suspense>
   );
 }
